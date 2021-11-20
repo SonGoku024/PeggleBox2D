@@ -1,0 +1,31 @@
+{
+	"BUILD_DIR" : "C:/Users/achil/Desktop/peggleBox2D-main/peggleBox2D-main/out/build/x64-Debug/Peggle_autogen",
+	"CMAKE_BINARY_DIR" : "C:/Users/achil/Desktop/peggleBox2D-main/peggleBox2D-main/out/build/x64-Debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "C:/Users/achil/Desktop/peggleBox2D-main/peggleBox2D-main/out/build/x64-Debug",
+	"CMAKE_CURRENT_SOURCE_DIR" : "C:/Users/achil/Desktop/peggleBox2D-main/peggleBox2D-main",
+	"CMAKE_SOURCE_DIR" : "C:/Users/achil/Desktop/peggleBox2D-main/peggleBox2D-main",
+	"INCLUDE_DIR" : "C:/Users/achil/Desktop/peggleBox2D-main/peggleBox2D-main/out/build/x64-Debug/Peggle_autogen/include",
+	"INPUTS" : 
+	[
+		"C:/Users/achil/Desktop/peggleBox2D-main/peggleBox2D-main/sprites/title.gif",
+		"C:/Users/achil/Desktop/peggleBox2D-main/peggleBox2D-main/sprites/stage_elements.png",
+		"C:/Users/achil/Desktop/peggleBox2D-main/peggleBox2D-main/sprites/peggles.png",
+		"C:/Users/achil/Desktop/peggleBox2D-main/peggleBox2D-main/sprites/ball.png",
+		"C:/Users/achil/Desktop/peggleBox2D-main/peggleBox2D-main/backgroundLevel/level1.png",
+		"C:/Users/achil/Desktop/peggleBox2D-main/peggleBox2D-main/icons/peggle.png",
+		"C:/Users/achil/Desktop/peggleBox2D-main/peggleBox2D-main/background/title_screen.jpg",
+		"C:/Users/achil/Desktop/peggleBox2D-main/peggleBox2D-main/background/mainMenuButtons.png",
+		"C:/Users/achil/Desktop/peggleBox2D-main/peggleBox2D-main/background/mainMenu.png",
+		"C:/Users/achil/Desktop/peggleBox2D-main/peggleBox2D-main/background/quit.gif"
+	],
+	"LOCK_FILE" : "C:/Users/achil/Desktop/peggleBox2D-main/peggleBox2D-main/out/build/x64-Debug/CMakeFiles/Peggle_autogen.dir/AutoRcc_resources_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "resources" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_resources.cpp",
+	"RCC_EXECUTABLE" : "D:/achil/Qt/5.9.9/msvc2017_64/bin/rcc.exe",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "C:/Users/achil/Desktop/peggleBox2D-main/peggleBox2D-main/out/build/x64-Debug/CMakeFiles/Peggle_autogen.dir/AutoRcc_resources_EWIEGA46WW_Used.txt",
+	"SOURCE" : "C:/Users/achil/Desktop/peggleBox2D-main/peggleBox2D-main/resources.qrc",
+	"VERBOSITY" : 0
+}
