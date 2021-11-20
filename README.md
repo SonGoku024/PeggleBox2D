@@ -1,5 +1,5 @@
 # peggleBox2D
-If build not work -> -right click on project name in solution explorer
+If build not work -> -right click on project name in solution explorerr
                      -property
                      -linker
                      -directory libraries -> set the path of an directory where there is the box2d.lib
