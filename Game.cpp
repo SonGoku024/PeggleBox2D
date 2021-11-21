@@ -263,15 +263,15 @@ void Game::mouseReleaseEvent(QMouseEvent* e)
 void Game::mouseMoveEvent(QMouseEvent* e)
 {
 
-//    QPoint screenMiddle((sceneRect().width() / 2), 0);
+    //    QPoint screenMiddle((sceneRect().width() / 2), 0);
 
-//    QPainter painter(this);
-//    QPen pen(Qt::red,10);
-//    //p.setPen(pen);
-//    painter.setPen(pen);
+    //    QPainter painter(this);
+    //    QPen pen(Qt::red,10);
+    //    //p.setPen(pen);
+    //    painter.setPen(pen);
 
 
-//    painter.drawLine(screenMiddle.x(), screenMiddle.y(), e->pos().x(), e->pos().y());
+    //    painter.drawLine(screenMiddle.x(), screenMiddle.y(), e->pos().x(), e->pos().y());
 
 }
 
