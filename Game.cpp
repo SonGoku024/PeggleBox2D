@@ -262,6 +262,17 @@ void Game::mouseReleaseEvent(QMouseEvent* e)
 
 void Game::mouseMoveEvent(QMouseEvent* e)
 {
+    setMouseTracking(true);
+    QPoint midPos((sceneRect().width() / 2), 0), currPos;
+
+
+    QGraphicsLineItem* item;
+    item = new QGraphicsLineItem();
+    item->setPen(QPen(Qt::red));
+
+    currPos = e->pos();
+    item->setLine(QLineF(midPos, currPos));
+    _world->addItem(item);
 
     //    QPoint screenMiddle((sceneRect().width() / 2), 0);
 
