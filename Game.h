@@ -51,6 +51,7 @@ private:
     //box2d
     b2World* world2d;
     b2Body* MasterPeg;
+    b2Body* bucket;
     QVector<b2Body*> pegBall;
 
     // singleton
