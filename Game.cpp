@@ -155,6 +155,34 @@ void Game::buildLevel()
 
     MasterPeg->CreateFixture(&ballFixtureDef);
     //
+    
+    // create bucket
+    QGraphicsPixmapItem* bucketItem;
+    b2BodyDef bucketDef;
+
+    bucketDef.type = b2_kinematicBody;
+    bucketDef.linearDamping = 0.1;
+    bucketDef.position.Set((sceneRect().width() / 2) / 30.0, (sceneRect().height()-30) / 30.0);
+    bucket = world2d->CreateBody(&bucketDef);
+    bucketItem = new QGraphicsPixmapItem(0);
+    bucketItem->setPixmap(Sprites::instance()->get("bucket"));
+    bucketItem->setPos((sceneRect().width() / 2), (sceneRect().height() - 30));
+    _world->addItem(bucketItem);
+    bucket->SetUserData((bucketItem));
+
+    b2PolygonShape groundShape;
+
+    groundShape.m_radius = 0.3;
+    groundShape.SetAsBox(168/2 / 30.0, 24 / 2 / 30.0);
+
+    b2FixtureDef buckFixture;
+    buckFixture.restitution = 0.2;
+    buckFixture.shape = &groundShape;
+    buckFixture.density = 50.0f;
+
+    bucket->CreateFixture(&buckFixture);
+    bucket->SetLinearVelocity(b2Vec2(10, 0));
+    
 
     // CREATE PLATFORM------------------------------------------
     /*
@@ -214,7 +242,17 @@ void Game::nextFrame()
 
     QGraphicsPixmapItem* item = (QGraphicsPixmapItem*)MasterPeg->GetUserData();
     item->setPos(MasterPeg->GetPosition().x * 30.0, MasterPeg->GetPosition().y * 30.0);
-
+    
+    QGraphicsPixmapItem* itemBuck = (QGraphicsPixmapItem*)bucket->GetUserData();
+    itemBuck->setPos(bucket->GetPosition().x * 30.0, bucket->GetPosition().y * 30.0);
+    if (bucket->GetPosition().x >40) {
+        bucket->SetLinearVelocity(b2Vec2(-10, 0));
+        
+    }
+    else if (bucket->GetPosition().x < 5) {
+        bucket->SetLinearVelocity(b2Vec2(10, 0));
+    }
+    
     if (MasterPeg->GetPosition().y > 25)
     {
         MasterPeg->SetTransform(b2Vec2((sceneRect().width() / 2) / 30.0, 0 / 30.0), MasterPeg->GetAngle());
