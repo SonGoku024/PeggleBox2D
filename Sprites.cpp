@@ -13,7 +13,7 @@ static QPixmap loadTexture(const std::string &file, QColor mask_color = Qt::mage
     return pixmap;
 }
 
-// moving within sprite utility function //non ci serve
+// moving within sprite utility function //ci servirà per i font credo
 QRect moveBy(QRect rect, int x, int y, int dx = 16, int dy = 16, int border_x = 1, int border_y = 1)
 {
     rect.moveTo(QPoint(rect.x() + x * dx + x * border_x, rect.y() + y * dy + y * border_y));
