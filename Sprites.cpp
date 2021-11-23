@@ -23,6 +23,7 @@ QRect moveBy(QRect rect, int x, int y, int dx = 16, int dy = 16, int border_x = 
 // main object positions within sprites //non ha senso da togliere perché non ci serve
 static QRect player(467, 259, 93, 93);
 static QRect pegle(0, 0, 200, 200);
+static QRect bucket(168, 200, 168, 24);
 
 Sprites *Sprites::instance()
 {
@@ -53,8 +54,8 @@ QPixmap Sprites::get(const std::string &id)
 
     else if (id == "player")
         return loadTexture(":/sprites/ball.png", QColor(0, 0, 0)).copy(QRect(0, 0, 100, 100));
-    // else if (id == "bucket")
-    //  return stage_elements.copy(bucket);
+    else if (id == "bucket")
+     return stage_elements.copy(bucket);
     // else if (id == "cannon")
     //    return stage_elements.copy(cannon);
 
