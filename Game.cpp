@@ -86,7 +86,7 @@ void Game::buildLevel()
     _world->addPixmap(QPixmap(Sprites::instance()->get("Hud_Unicorn")));
 
     //create physics world
-    b2Vec2 gravity(0.0f, 5.0f);
+    b2Vec2 gravity(0.0f, 6.0f);
     world2d = new b2World(gravity);
     world2d->SetAllowSleeping(false);
     //
@@ -287,14 +287,18 @@ void Game::mousePressEvent(QMouseEvent* e)
 
     if (e->button()==Qt::LeftButton && _state==GameState::PLAYING)
     {
-        double angle = atan2(MasterPeg->GetPosition().y - QCursor::pos().y(), MasterPeg->GetPosition().x - QCursor::pos().x());
-        MasterPeg->SetLinearVelocity(b2Vec2(-cos(angle) * 10, -sin(angle) * 10));
+        world2d->SetGravity(b2Vec2(0, 6.0f));
+        QPoint midPos((sceneRect().width() / 2), 0), currPos;
+
+        currPos = QPoint(mapToScene(e->pos()).x(), mapToScene(e->pos()).y());
+       MasterPeg->SetLinearVelocity(b2Vec2((currPos.x()-midPos.x())/50, (currPos.y()-midPos.y())/50));
+        
     }
 
     if (e->button() == Qt::RightButton)
     {
         _engine.setInterval(5);
-        world2d->SetGravity(b2Vec2(0, 5.0f));
+        world2d->SetGravity(b2Vec2(0, 10.0f));
     }
 
 }
@@ -315,7 +319,7 @@ void Game::mouseMoveEvent(QMouseEvent* e)
     item = new QGraphicsLineItem();
     item->setPen(QPen(Qt::red));
 
-    currPos = e->pos();
+    currPos = QPoint(mapToScene(e->pos()).x(), mapToScene(e->pos()).y());
     item->setLine(QLineF(midPos, currPos));
     _world->addItem(item);
 
