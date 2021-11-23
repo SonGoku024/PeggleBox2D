@@ -138,6 +138,7 @@ void Game::buildLevel()
     ball.linearDamping = 0.1;
     ball.position.Set((sceneRect().width() / 2) / 30.0, 0 / 30.0);
     MasterPeg = world2d->CreateBody(&ball);
+
     ballItem = new QGraphicsPixmapItem(0);
     ballItem->setPixmap(Sprites::instance()->get("player").scaled(14, 14));
     ballItem->setPos((sceneRect().width() / 2), 0);
@@ -164,6 +165,7 @@ void Game::buildLevel()
     bucketDef.linearDamping = 0.1;
     bucketDef.position.Set((sceneRect().width() / 2) / 30.0, (sceneRect().height()-30) / 30.0);
     bucket = world2d->CreateBody(&bucketDef);
+
     bucketItem = new QGraphicsPixmapItem(0);
     bucketItem->setPixmap(Sprites::instance()->get("bucket"));
     bucketItem->setPos((sceneRect().width() / 2), (sceneRect().height() - 30));
@@ -171,7 +173,6 @@ void Game::buildLevel()
     bucket->SetUserData((bucketItem));
 
     b2PolygonShape groundShape;
-
     groundShape.m_radius = 0.3;
     groundShape.SetAsBox(168/2 / 30.0, 24 / 2 / 30.0);
 
@@ -235,24 +236,16 @@ void Game::nextFrame()
 {
     world2d->Step(timeStep, velocityIterations, positionIterations); //sarebbe l'advance
 
+
     for (b2ContactEdge* edge = MasterPeg->GetContactList(); edge; edge = edge->next)
     {
         static_cast<QGraphicsPixmapItem*>(edge->contact->GetFixtureA()->GetBody()->GetUserData())->setPixmap(Sprites::instance()->get("peg_blue_hit").scaled(18, 18));
     }
 
+    //master peg
     QGraphicsPixmapItem* item = (QGraphicsPixmapItem*)MasterPeg->GetUserData();
     item->setPos(MasterPeg->GetPosition().x * 30.0, MasterPeg->GetPosition().y * 30.0);
-    
-    QGraphicsPixmapItem* itemBuck = (QGraphicsPixmapItem*)bucket->GetUserData();
-    itemBuck->setPos(bucket->GetPosition().x * 30.0, bucket->GetPosition().y * 30.0);
-    if (bucket->GetPosition().x >40) {
-        bucket->SetLinearVelocity(b2Vec2(-10, 0));
-        
-    }
-    else if (bucket->GetPosition().x < 5) {
-        bucket->SetLinearVelocity(b2Vec2(10, 0));
-    }
-    
+
     if (MasterPeg->GetPosition().y > 25)
     {
         MasterPeg->SetTransform(b2Vec2((sceneRect().width() / 2) / 30.0, 0 / 30.0), MasterPeg->GetAngle());
@@ -260,7 +253,21 @@ void Game::nextFrame()
         MasterPeg->SetAngularVelocity(0);
         world2d->SetGravity(b2Vec2(0, 0));
     }
+    //
 
+    //bucket
+    QGraphicsPixmapItem* itemBuck = (QGraphicsPixmapItem*)bucket->GetUserData();
+    itemBuck->setPos(bucket->GetPosition().x * 30.0, bucket->GetPosition().y * 30.0);
+    if (bucket->GetPosition().x >40)
+    {
+        bucket->SetLinearVelocity(b2Vec2(-10, 0));
+        
+    }
+    else if (bucket->GetPosition().x < 5)
+    {
+        bucket->SetLinearVelocity(b2Vec2(10, 0));
+    }
+    //
 }
 
 // EVENTI
