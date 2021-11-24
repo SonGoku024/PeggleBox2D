@@ -60,10 +60,13 @@ private:
 
 public:
     static Game *instance();
-
+    QPainterPath myPath;
     // getters / setters
     QGraphicsScene *world() { return _world; }
+    b2Vec2 getTrajectoryPoint(b2Vec2& startingPosition, b2Vec2& startingVelocity, float n);
     Hud *Hudd() { return _hud; }
+
+    QPolygon pol;
 
     // event handlers
     virtual void mousePressEvent(QMouseEvent *e) override;
