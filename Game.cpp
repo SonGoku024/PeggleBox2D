@@ -71,9 +71,8 @@ void Game::menuDuel()
 {
     _world->clear();
     _state = GameState::MENU_DUEL;
-
-    _world->addPixmap(QPixmap(Sprites::instance()->get("peggle_title")));
-
+    showNormal();
+    fitInView(_world->addPixmap(QPixmap(Sprites::instance()->get("peggle_title"))), Qt::KeepAspectRatio);
     //dopo aver scelto tutti i parametri del duello
     //click sulla apposito bottone per andare in PLAYING
 }
@@ -83,11 +82,13 @@ void Game::buildLevel()
     _world->clear();
 
     //QGraphicsPixmapItem* level = _world->addPixmap(QPixmap(Sprites::instance()->get("Hud_Unicorn")));
-    _world->addPixmap(QPixmap(Sprites::instance()->get("Hud_Unicorn")));
-
+    QGraphicsPixmapItem* level=_world->addPixmap(QPixmap(Sprites::instance()->get("Hud_Unicorn")));
+    fitInView(level, Qt::KeepAspectRatio);
+    
     //create physics world
     b2Vec2 gravity(0.0f, 6.0f);
     world2d = new b2World(gravity);
+
     world2d->SetAllowSleeping(false);
     //
 
@@ -237,16 +238,16 @@ void Game::nextFrame()
     world2d->Step(timeStep, velocityIterations, positionIterations); //sarebbe l'advance
 
 
-    for (b2ContactEdge* edge = MasterPeg->GetContactList(); edge; edge = edge->next)
+   /* for (b2ContactEdge* edge = MasterPeg->GetContactList(); edge; edge = edge->next)
     {
         static_cast<QGraphicsPixmapItem*>(edge->contact->GetFixtureA()->GetBody()->GetUserData())->setPixmap(Sprites::instance()->get("peg_blue_hit").scaled(18, 18));
-    }
+    }*/
 
     //master peg
     QGraphicsPixmapItem* item = (QGraphicsPixmapItem*)MasterPeg->GetUserData();
     item->setPos(MasterPeg->GetPosition().x * 30.0, MasterPeg->GetPosition().y * 30.0);
 
-    if (MasterPeg->GetPosition().y > 25)
+    if (MasterPeg->GetPosition().y > 38)
     {
         MasterPeg->SetTransform(b2Vec2((sceneRect().width() / 2) / 30.0, 0 / 30.0), MasterPeg->GetAngle());
         MasterPeg->SetLinearVelocity(b2Vec2(0, 0));
@@ -269,6 +270,8 @@ void Game::nextFrame()
     }
     //
 }
+
+
 
 // EVENTI
 void Game::mousePressEvent(QMouseEvent* e)
@@ -307,21 +310,36 @@ void Game::mouseReleaseEvent(QMouseEvent* e)
 {
     if (e->button() == Qt::RightButton)
         _engine.setInterval(1000 / GAME_FPS);
+    
 }
 
 void Game::mouseMoveEvent(QMouseEvent* e)
 {
+   
     setMouseTracking(true);
     QPoint midPos((sceneRect().width() / 2), 0), currPos;
 
 
-    QGraphicsLineItem* item;
+   /* QGraphicsLineItem* item;
     item = new QGraphicsLineItem();
     item->setPen(QPen(Qt::red));
-
+    */
     currPos = QPoint(mapToScene(e->pos()).x(), mapToScene(e->pos()).y());
-    item->setLine(QLineF(midPos, currPos));
-    _world->addItem(item);
+    
+   
+    for (int i = 0; i < 600; i++) { // three seconds at 60fps
+        b2Vec2 trajectoryPosition = getTrajectoryPoint(b2Vec2(midPos.x(), 0.0), b2Vec2((currPos.x() - midPos.x())/50.0, (currPos.y() - midPos.y())/50.0 ), i);
+        pol.append(QPoint(trajectoryPosition.x, trajectoryPosition.y));
+    }
+    
+    myPath.addPolygon(pol);
+    world()->addPath(myPath, QPen(Qt::red, 2));
+    
+    pol.clear();
+    
+   
+   // item->setLine(QLineF(midPos, currPos));
+   // _world->addItem(item);
 
     //    QPoint screenMiddle((sceneRect().width() / 2), 0);
 
@@ -357,6 +375,8 @@ void Game::keyPressEvent(QKeyEvent* e)
     {
         reset();
         menuDuel();
+        
+        
     }
     if (e->key() == Qt::Key_C)
     {
@@ -408,4 +428,15 @@ void Game::updateFPS()
     _FPS_timer.setTimerType(Qt::PreciseTimer);
     _FPS_timer.setInterval(1000);
     _FPS_timer.start();*/
+}
+
+
+b2Vec2 Game::getTrajectoryPoint(b2Vec2& startingPosition, b2Vec2& startingVelocity, float n)
+{
+    //velocity and gravity are given per second but we want time step values here
+    float t = 1 / 60.0f; // seconds per time step (at 60fps)
+    b2Vec2 stepVelocity = t * startingVelocity; // m/s
+    b2Vec2 stepGravity = t * t * world2d->GetGravity(); // m/s/s
+
+    return startingPosition + n * stepVelocity + 0.5f * (n * n + n) * stepGravity;
 }
