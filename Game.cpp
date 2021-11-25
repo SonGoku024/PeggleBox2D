@@ -317,13 +317,13 @@ void Game::mouseMoveEvent(QMouseEvent* e)
 {
    
     setMouseTracking(true);
-    QPoint midPos((sceneRect().width() / 2), 0), currPos;
+    /*QPoint midPos((sceneRect().width() / 2), 0), currPos;
 
 
-   /* QGraphicsLineItem* item;
+    QGraphicsLineItem* item;
     item = new QGraphicsLineItem();
     item->setPen(QPen(Qt::red));
-    */
+    
     currPos = QPoint(mapToScene(e->pos()).x(), mapToScene(e->pos()).y());
     
    
@@ -335,7 +335,7 @@ void Game::mouseMoveEvent(QMouseEvent* e)
     myPath.addPolygon(pol);
     world()->addPath(myPath, QPen(Qt::red, 2));
     
-    pol.clear();
+    pol.clear();*/
     
    
    // item->setLine(QLineF(midPos, currPos));
