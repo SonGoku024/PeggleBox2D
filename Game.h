@@ -3,6 +3,7 @@
 #include <QGraphicsView>
 #include <QTimer>
 #include <QLabel>
+#include <QPainterPath>
 
 #include "Bucket.h"
 #include "Hud.h"
