@@ -7,6 +7,7 @@
 
 #include "Bucket.h"
 #include "Hud.h"
+#include "Peg.h"
 
 #include "box2d/include/box2d/b2_settings.h"
 #include "box2d/include/box2d/box2d.h"
@@ -36,6 +37,10 @@ class PGG::Game : public QGraphicsView
     Q_OBJECT
 
 private:
+
+    Peg* _MasterPeg;
+    Peg* _peg;
+
     // attributes
     QTimer _engine;
     GameState _state;
@@ -51,9 +56,8 @@ private:
 
     //box2d
     b2World* world2d;
-    b2Body* MasterPeg;
+
     b2Body* bucket;
-    QVector<b2Body*> pegBall;
 
     // singleton
     static Game *_uniqueInstance;
@@ -62,6 +66,7 @@ private:
 public:
     static Game *instance();
     QPainterPath myPath;
+
     // getters / setters
     QGraphicsScene *world() { return _world; }
     b2Vec2 getTrajectoryPoint(b2Vec2& startingPosition, b2Vec2& startingVelocity, float n);

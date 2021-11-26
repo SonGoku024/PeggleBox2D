@@ -33,13 +33,13 @@ Sprites *Sprites::instance()
 
 Sprites::Sprites() //load in RAM
 {
+    sprites = loadTexture(":/sprites/sprites.png");
     title_screen = loadTexture(":/sprites/peggle_title.png", QColor(255, 0, 255));
 
     Hud_Unicorn = loadTexture(":/sprites/krita.png"); // da fare prob. nell'altra classe Hud
     //Hud_Drake ...
 
     //dynamic Hud da fare
-
     stage_elements = loadTexture(":/sprites/stage_elements.png", QColor(255, 0, 255));
     pegles = loadTexture(":/sprites/peggles.png", QColor(255, 255, 255));
 }
