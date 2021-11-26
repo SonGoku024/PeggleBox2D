@@ -22,7 +22,7 @@ QRect moveBy(QRect rect, int x, int y, int dx = 16, int dy = 16, int border_x = 
 
 // main object positions within sprites //non ha senso da togliere perché non ci serve
 static QRect player(467, 259, 93, 93);
-static QRect pegle(0, 0, 200, 200);
+static QRect pegle(48, 662, 24, 24);
 static QRect bucket(168, 200, 168, 24);
 static QRect remainingBallNumber(479, 305, 30, 54);
 
@@ -86,16 +86,14 @@ QPixmap Sprites::get(const std::string &id)
     // else if (id == "cannon")
     //    return stage_elements.copy(cannon);
 
-    
-    else if (id == "peg_blue_hit")
-        return pegles.copy(pegle);
-    else if (id == "peg_red_hit")
-        return pegles.copy(moveBy(pegle, 1, 0, 200));
     else if (id == "peg_blue")
-        return pegles.copy(moveBy(pegle, 0, 1, 0, 200));
+        return pegles.copy(pegle);
     else if (id == "peg_red")
-        return pegles.copy(moveBy(pegle, 1, 1, 200, 200));
-
+        return pegles.copy(moveBy(pegle, 0, 1));
+    else if (id == "peg_blue_hit")
+        return pegles.copy(moveBy(pegle, 0, 5));
+    else if (id == "peg_red_hit")
+        return pegles.copy(moveBy(pegle, 0, 6));
     else
     {
         std::cerr << "Cannot find sprite texture with id \"" << id << "\"\n";
