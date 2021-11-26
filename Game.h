@@ -71,6 +71,7 @@ public:
     int remainingBall = 9;
     QGraphicsPixmapItem* remainingBallPixmap;
 
+
     // utility
     void printRemainingBall(int b);
 

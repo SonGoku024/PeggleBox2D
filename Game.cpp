@@ -1,6 +1,8 @@
 #include <QApplication>
 #include <QPainter>
 #include <QGraphicsPixmapItem>
+#include <QGraphicsProxyWidget>
+#include <QPushButton>
 #include <QKeyEvent>
 #include <QIcon>
 #include <cmath>
@@ -34,7 +36,7 @@ Game::Game() : QGraphicsView()
 
     setScene(_world);
 
-    setInteractive(false);
+    setInteractive(true);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
@@ -224,6 +226,31 @@ void Game::buildLevel()
 
         */
 
+
+    // create panels
+    b2BodyDef panel;
+    b2Body* realPanelLeft;
+    b2Body* realPanelRight;
+    panel.type = b2_staticBody;
+    panel.linearDamping = 0.1;
+    panel.position.Set(0 / 30.0, 0 / 30.0);
+    realPanelLeft = world2d->CreateBody(&panel);
+    panel.position.Set(sceneRect().width() / 30.0, 0 / 30.0);
+    realPanelRight= world2d->CreateBody(&panel);
+    b2PolygonShape panelShape;
+    
+    panelShape.m_radius = 0.2;
+    panelShape.SetAsBox(125  / 30.0, sceneRect().height() / 30.0);
+
+    b2FixtureDef panelFixture;
+    panelFixture.restitution = 0.2;
+    panelFixture.shape = &panelShape;
+    panelFixture.density = 50.0f;
+
+    realPanelLeft->CreateFixture(&panelFixture);
+    realPanelRight->CreateFixture(&panelFixture);
+
+  
 }
 
 void Game::play() //in gioco
@@ -252,7 +279,7 @@ void Game::nextFrame()
     QGraphicsPixmapItem* item = (QGraphicsPixmapItem*)MasterPeg->GetUserData();
     item->setPos(MasterPeg->GetPosition().x * 30.0, MasterPeg->GetPosition().y * 30.0);
 
-    if (MasterPeg->GetPosition().y > 36)
+    if (MasterPeg->GetPosition().y > 35)
     {
         remainingBall--;
         printf("%d",remainingBall);
