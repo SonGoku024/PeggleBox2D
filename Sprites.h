@@ -15,6 +15,8 @@ private:
     QPixmap stage_elements;
     QPixmap title_screen;
     QPixmap pegles;
+    QPixmap fonts;
+    QPixmap sprites;
 
     //da fare nella classe Hud
     QPixmap Hud_Unicorn;

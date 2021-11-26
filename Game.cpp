@@ -73,6 +73,7 @@ void Game::menuDuel()
     _state = GameState::MENU_DUEL;
     showNormal();
     fitInView(_world->addPixmap(QPixmap(Sprites::instance()->get("peggle_title"))), Qt::KeepAspectRatio);
+
     //dopo aver scelto tutti i parametri del duello
     //click sulla apposito bottone per andare in PLAYING
 }
@@ -80,10 +81,14 @@ void Game::menuDuel()
 void Game::buildLevel()
 {
     _world->clear();
-
+   
     //QGraphicsPixmapItem* level = _world->addPixmap(QPixmap(Sprites::instance()->get("Hud_Unicorn")));
     QGraphicsPixmapItem* level=_world->addPixmap(QPixmap(Sprites::instance()->get("Hud_Unicorn")));
+    remainingBallPixmap= _world->addPixmap(Sprites::instance()->get("9"));
+    remainingBallPixmap->setPos(QPoint(45, 180));
+    remainingBallPixmap->setScale(1.8);
     fitInView(level, Qt::KeepAspectRatio);
+
     
     //create physics world
     b2Vec2 gravity(0.0f, 6.0f);
@@ -247,8 +252,12 @@ void Game::nextFrame()
     QGraphicsPixmapItem* item = (QGraphicsPixmapItem*)MasterPeg->GetUserData();
     item->setPos(MasterPeg->GetPosition().x * 30.0, MasterPeg->GetPosition().y * 30.0);
 
-    if (MasterPeg->GetPosition().y > 38)
+    if (MasterPeg->GetPosition().y > 36)
     {
+        remainingBall--;
+        printf("%d",remainingBall);
+        printRemainingBall(remainingBall);
+
         MasterPeg->SetTransform(b2Vec2((sceneRect().width() / 2) / 30.0, 0 / 30.0), MasterPeg->GetAngle());
         MasterPeg->SetLinearVelocity(b2Vec2(0, 0));
         MasterPeg->SetAngularVelocity(0);
@@ -439,4 +448,49 @@ b2Vec2 Game::getTrajectoryPoint(b2Vec2& startingPosition, b2Vec2& startingVeloci
     b2Vec2 stepGravity = t * t * world2d->GetGravity(); // m/s/s
 
     return startingPosition + n * stepVelocity + 0.5f * (n * n + n) * stepGravity;
+}
+
+
+void Game::printRemainingBall(int b) { 
+    std::string tmp = "";
+    switch (b)
+    {
+    case 10:
+        tmp = "10";
+        break;
+    case 9:
+        tmp = "9";
+        break;
+    case 8:
+        tmp = "8";
+        break;
+    case 7:
+        tmp = "7";
+        break;
+    case 6:
+        tmp = "6";
+        break;
+    case 5:
+        tmp = "5";
+        break;
+    case 4:
+        tmp = "4";
+        break;
+    case 3:
+        tmp = "3";
+        break;
+    case 2:
+        tmp = "2";
+        break;
+    case 1:
+        tmp = "1";
+        break;
+    case 0:
+        tmp = "0";
+        break;
+    };
+    remainingBallPixmap->setPixmap(Sprites::instance()->get(tmp));
+
+    
+
 }
