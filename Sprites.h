@@ -18,6 +18,8 @@ private:
     QPixmap sprites;
     QPixmap bucketFront;
     QPixmap pegles;
+    QPixmap fonts;
+    QPixmap sprites;
 
     //da fare nella classe Hud
     QPixmap Hud_Unicorn;

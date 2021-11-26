@@ -73,6 +73,13 @@ public:
     Hud *Hudd() { return _hud; }
 
     QPolygon pol;
+    int remainingBall = 9;
+    QGraphicsPixmapItem* remainingBallPixmap;
+
+
+    // utility
+    void printRemainingBall(int b);
+
 
     // event handlers
     virtual void mousePressEvent(QMouseEvent *e) override;
