@@ -83,8 +83,7 @@ void Game::menuDuel()
 void Game::buildLevel()
 {
     _world->clear();
-   
-    //QGraphicsPixmapItem* level = _world->addPixmap(QPixmap(Sprites::instance()->get("Hud_Unicorn")));
+
     QGraphicsPixmapItem* level=_world->addPixmap(QPixmap(Sprites::instance()->get("Hud_Unicorn")));
     remainingBallPixmap= _world->addPixmap(Sprites::instance()->get("9"));
     remainingBallPixmap->setPos(QPoint(45, 180));
@@ -95,90 +94,40 @@ void Game::buildLevel()
     //create physics world
     b2Vec2 gravity(0.0f, 6.0f);
     world2d = new b2World(gravity);
-
     world2d->SetAllowSleeping(false);
     //
 
-    //create pegs
-    pegBall.resize(27);
-    QGraphicsPixmapItem* pegItem;
-    b2BodyDef peg;
-    int j = 0;
-    int k = 0;
+    QPoint qp;
+    _MasterPeg->MasterPeg(_world,world2d,false,qp,qp,false);
 
-    for (int i = 0; i <= 26; i++)
+    //put pegs
+    Peg p[96];
+
+    int offset_x=5;
+
+    for (int i=0; i<8; i++)
     {
-        if (k == 9)
+        for (int j=0; j<12; j++)
         {
-            k = 0;
-            j++;
+            if(i%2==0)
+            {
+                p[(i*10)+j].CirclePeg(_world,world2d,615/1.7+j*65,405+i*40,"blue");
+            }
+            else
+            {
+                p[(i*10)+j].CirclePeg(_world,world2d,565/1.7+j*65,405+i*40,"blue");
+            }
         }
-        peg.type = b2_staticBody;
-        peg.linearDamping = 0.4;
-        peg.position.Set((1220 + (100 * k))/2 / 30.0, (300 + (100 * j)) / 30.0);
-        pegBall[i] = world2d->CreateBody(&peg);
-
-        pegItem = new QGraphicsPixmapItem(0);
-        pegItem->setPixmap(Sprites::instance()->get("peg_blue").scaled(18, 18));
-        pegItem->setPos((1220 + (100 * k))/2, (300 + (100 * j)));
-        _world->addItem(pegItem);
-        pegBall[i]->SetUserData(pegItem);
-
-        b2CircleShape ballShape;
-        ballShape.m_p.Set(0, 0);
-        ballShape.m_radius = 0.2;
-
-        b2FixtureDef ballFixtureDef;
-        ballFixtureDef.restitution = 1;
-        ballFixtureDef.shape = &ballShape;
-        ballFixtureDef.density = 13.0f;
-        pegBall[i]->CreateFixture(&ballFixtureDef);
-
-        k++;
     }
     //
 
-    // create master peg
-    QGraphicsPixmapItem* ballItem;
-    b2BodyDef ball;
-
-    ball.type = b2_dynamicBody;
-    ball.linearDamping = 0.1;
-    ball.position.Set((sceneRect().width() / 2) / 30.0, 0 / 30.0);
-    MasterPeg = world2d->CreateBody(&ball);
-
-    ballItem = new QGraphicsPixmapItem(0);
-    ballItem->setPixmap(Sprites::instance()->get("player").scaled(14, 14));
-    ballItem->setPos((sceneRect().width() / 2), 0);
-    _world->addItem(ballItem);
-    MasterPeg->SetUserData((ballItem));
-
-    b2CircleShape ballShape;
-    ballShape.m_p.Set(0, 0);
-    ballShape.m_radius = 0.2;
-
-    b2FixtureDef ballFixtureDef;
-    ballFixtureDef.restitution = 0.2;
-    ballFixtureDef.shape = &ballShape;
-    ballFixtureDef.density = 50.0f;
-
-    MasterPeg->CreateFixture(&ballFixtureDef);
-    //
     
     // create bucket
-    QGraphicsPixmapItem* bucketItem;
     b2BodyDef bucketDef;
-
     bucketDef.type = b2_kinematicBody;
     bucketDef.linearDamping = 0.1;
-    bucketDef.position.Set((sceneRect().width() / 2) / 30.0, (sceneRect().height()-30) / 30.0);
+    bucketDef.position.Set((sceneRect().width() / 2) / 30.0, (sceneRect().height()- 62) / 30.0);
     bucket = world2d->CreateBody(&bucketDef);
-
-    bucketItem = new QGraphicsPixmapItem(0);
-    bucketItem->setPixmap(Sprites::instance()->get("bucket"));
-    bucketItem->setPos((sceneRect().width() / 2), (sceneRect().height() - 30));
-    _world->addItem(bucketItem);
-    bucket->SetUserData((bucketItem));
 
     b2PolygonShape groundShape;
     groundShape.m_radius = 0.3;
@@ -188,9 +137,19 @@ void Game::buildLevel()
     buckFixture.restitution = 0.2;
     buckFixture.shape = &groundShape;
     buckFixture.density = 50.0f;
-
     bucket->CreateFixture(&buckFixture);
+
     bucket->SetLinearVelocity(b2Vec2(10, 0));
+
+    QGraphicsPixmapItem* bucketItem;
+    bucketItem = new QGraphicsPixmapItem(0);
+    bucketItem->setPixmap(Sprites::instance()->get("bucket"));
+    bucketItem->setPos((sceneRect().width() / 2), (sceneRect().height() - 62));
+    bucketItem->setScale(2);
+    _world->addItem(bucketItem);
+    bucket->SetUserData((bucketItem));
+
+
     
 
     // CREATE PLATFORM------------------------------------------
@@ -270,12 +229,13 @@ void Game::nextFrame()
     world2d->Step(timeStep, velocityIterations, positionIterations); //sarebbe l'advance
 
 
-   /* for (b2ContactEdge* edge = MasterPeg->GetContactList(); edge; edge = edge->next)
+    /* for (b2ContactEdge* edge = MasterPeg->GetContactList(); edge; edge = edge->next)
     {
         static_cast<QGraphicsPixmapItem*>(edge->contact->GetFixtureA()->GetBody()->GetUserData())->setPixmap(Sprites::instance()->get("peg_blue_hit").scaled(18, 18));
     }*/
 
     //master peg
+
     QGraphicsPixmapItem* item = (QGraphicsPixmapItem*)MasterPeg->GetUserData();
     item->setPos(MasterPeg->GetPosition().x * 30.0, MasterPeg->GetPosition().y * 30.0);
 
@@ -290,23 +250,24 @@ void Game::nextFrame()
         MasterPeg->SetAngularVelocity(0);
         world2d->SetGravity(b2Vec2(0, 0));
     }
-    //
+
+    QPoint qp;
+    _MasterPeg->MasterPeg(_world,world2d,false,qp,qp,true);
 
     //bucket
     QGraphicsPixmapItem* itemBuck = (QGraphicsPixmapItem*)bucket->GetUserData();
     itemBuck->setPos(bucket->GetPosition().x * 30.0, bucket->GetPosition().y * 30.0);
-    if (bucket->GetPosition().x >40)
+    if (bucket->GetPosition().x >31)
     {
         bucket->SetLinearVelocity(b2Vec2(-10, 0));
         
     }
-    else if (bucket->GetPosition().x < 5)
+    else if (bucket->GetPosition().x < 6)
     {
         bucket->SetLinearVelocity(b2Vec2(10, 0));
     }
     //
 }
-
 
 
 // EVENTI
@@ -330,9 +291,9 @@ void Game::mousePressEvent(QMouseEvent* e)
         QPoint midPos((sceneRect().width() / 2), 0), currPos;
 
         currPos = QPoint(mapToScene(e->pos()).x(), mapToScene(e->pos()).y());
-       MasterPeg->SetLinearVelocity(b2Vec2((currPos.x()-midPos.x())/50, (currPos.y()-midPos.y())/50));
-        
-    }
+
+        _MasterPeg->MasterPeg(_world,world2d,true,midPos,currPos,false)->SetLinearVelocity(b2Vec2((currPos.x()-midPos.x())/50, (currPos.y()-midPos.y())/50));
+        }
 
     if (e->button() == Qt::RightButton)
     {
@@ -351,7 +312,7 @@ void Game::mouseReleaseEvent(QMouseEvent* e)
 
 void Game::mouseMoveEvent(QMouseEvent* e)
 {
-   
+
     setMouseTracking(true);
     /*QPoint midPos((sceneRect().width() / 2), 0), currPos;
 
@@ -362,7 +323,7 @@ void Game::mouseMoveEvent(QMouseEvent* e)
     
     currPos = QPoint(mapToScene(e->pos()).x(), mapToScene(e->pos()).y());
     
-   
+
     for (int i = 0; i < 600; i++) { // three seconds at 60fps
         b2Vec2 trajectoryPosition = getTrajectoryPoint(b2Vec2(midPos.x(), 0.0), b2Vec2((currPos.x() - midPos.x())/50.0, (currPos.y() - midPos.y())/50.0 ), i);
         pol.append(QPoint(trajectoryPosition.x, trajectoryPosition.y));
@@ -373,9 +334,9 @@ void Game::mouseMoveEvent(QMouseEvent* e)
     
     pol.clear();*/
     
-   
-   // item->setLine(QLineF(midPos, currPos));
-   // _world->addItem(item);
+
+    // item->setLine(QLineF(midPos, currPos));
+    // _world->addItem(item);
 
     //    QPoint screenMiddle((sceneRect().width() / 2), 0);
 
@@ -477,8 +438,8 @@ b2Vec2 Game::getTrajectoryPoint(b2Vec2& startingPosition, b2Vec2& startingVeloci
     return startingPosition + n * stepVelocity + 0.5f * (n * n + n) * stepGravity;
 }
 
-
-void Game::printRemainingBall(int b) { 
+void Game::printRemainingBall(int b) 
+{ 
     std::string tmp = "";
     switch (b)
     {
@@ -517,7 +478,5 @@ void Game::printRemainingBall(int b) {
         break;
     };
     remainingBallPixmap->setPixmap(Sprites::instance()->get(tmp));
-
-    
 
 }
