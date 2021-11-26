@@ -18,6 +18,9 @@ private:
 
     b2Body* _MasterPeg;
 
+    int remainingBall = 9;
+    QGraphicsPixmapItem* remainingBallPixmap;
+
     //QVector<b2Body*> pegBall;
 
 public:

@@ -46,13 +46,18 @@ b2Body* Peg::MasterPeg(QGraphicsScene* _world, b2World* world2d, bool cannonShot
         QGraphicsPixmapItem* item = (QGraphicsPixmapItem*)_MasterPeg->GetUserData();
         item->setPos(_MasterPeg->GetPosition().x * 30.0, _MasterPeg->GetPosition().y * 30.0);
 
-        if (_MasterPeg->GetPosition().y > 38)
+        if (_MasterPeg->GetPosition().y > 35)
         {
+//            remainingBall--;
+//            printf("%d",remainingBall);
+//            printRemainingBall(remainingBall);
+
             _MasterPeg->SetTransform(b2Vec2((_world->sceneRect().width() / 2) / 30.0, 0 / 30.0), _MasterPeg->GetAngle());
             _MasterPeg->SetLinearVelocity(b2Vec2(0, 0));
             _MasterPeg->SetAngularVelocity(0);
             world2d->SetGravity(b2Vec2(0, 0));
         }
+
     }
     if (cannonShot)
     {

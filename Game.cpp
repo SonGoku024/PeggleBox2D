@@ -85,9 +85,9 @@ void Game::buildLevel()
     _world->clear();
 
     QGraphicsPixmapItem* level=_world->addPixmap(QPixmap(Sprites::instance()->get("Hud_Unicorn")));
-    remainingBallPixmap= _world->addPixmap(Sprites::instance()->get("9"));
-    remainingBallPixmap->setPos(QPoint(45, 180));
-    remainingBallPixmap->setScale(1.8);
+//    remainingBallPixmap= _world->addPixmap(Sprites::instance()->get("9"));
+//    remainingBallPixmap->setPos(QPoint(45, 180));
+//    remainingBallPixmap->setScale(1.8);
     fitInView(level, Qt::KeepAspectRatio);
 
     
@@ -236,20 +236,6 @@ void Game::nextFrame()
 
     //master peg
 
-    QGraphicsPixmapItem* item = (QGraphicsPixmapItem*)MasterPeg->GetUserData();
-    item->setPos(MasterPeg->GetPosition().x * 30.0, MasterPeg->GetPosition().y * 30.0);
-
-    if (MasterPeg->GetPosition().y > 35)
-    {
-        remainingBall--;
-        printf("%d",remainingBall);
-        printRemainingBall(remainingBall);
-
-        MasterPeg->SetTransform(b2Vec2((sceneRect().width() / 2) / 30.0, 0 / 30.0), MasterPeg->GetAngle());
-        MasterPeg->SetLinearVelocity(b2Vec2(0, 0));
-        MasterPeg->SetAngularVelocity(0);
-        world2d->SetGravity(b2Vec2(0, 0));
-    }
 
     QPoint qp;
     _MasterPeg->MasterPeg(_world,world2d,false,qp,qp,true);
@@ -477,6 +463,6 @@ void Game::printRemainingBall(int b)
         tmp = "0";
         break;
     };
-    remainingBallPixmap->setPixmap(Sprites::instance()->get(tmp));
+    //remainingBallPixmap->setPixmap(Sprites::instance()->get(tmp));
 
 }
